@@ -41,7 +41,7 @@
         </activity> <!-- 百度地图添加 meta-data service -->
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="6wX3G1kLqfFariw154PGcSfIjvQrgCL2" />
+            android:value="百度地图申请的应用ak" />
 
         <service
             android:name="com.baidu.location.f"
