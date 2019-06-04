@@ -1,0 +1,31 @@
+<html>
+<header>
+
+    <meta charset="UTF-8">
+    <title>test</title>
+
+    <script>
+    function callHello(){
+        AndroidNative.hello();
+    }
+
+    function callHello1(){
+        AndroidNative.hello('hello Android');
+    }
+
+    function callAndroid(){
+    //Js编写
+        var temp = AndroidNative.getAndroid();
+        console.log(temp);
+        alert(temp);
+    }
+
+</script>
+</header>
+<body>
+<button onclick="callHello()">Toast</button>
+<button onclick="callAndroid()">获取值</button>
+
+</body>
+
+</html>

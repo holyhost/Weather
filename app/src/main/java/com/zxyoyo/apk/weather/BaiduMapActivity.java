@@ -1,8 +1,11 @@
 package com.zxyoyo.apk.weather;
 
+import android.content.Intent;
+import android.graphics.Point;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.baidu.location.BDAbstractLocationListener;
@@ -17,6 +20,7 @@ import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
+import com.baidu.mapapi.model.LatLng;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -26,6 +30,7 @@ public class BaiduMapActivity extends AppCompatActivity {
 
     private MapView mMapView = null;
     BaiduMap mBaiduMap;
+    private LatLng point;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,10 +76,18 @@ public class BaiduMapActivity extends AppCompatActivity {
             @Override
             public void onMapStatusChangeFinish(MapStatus mapStatus) {
                 Log.e("map-finish",mapStatus+"");
+                point = mapStatus.target;
 
             }
         });
 
+    }
+
+    public void ivClick(View view){
+        String url = "http://m.weather.com.cn/d/town/index?lat="+point.latitude+"&lon="+point.longitude;
+        Intent intent = new Intent(this,WebActivity.class);
+        intent.putExtra("url",url);
+        startActivity(intent);
     }
 
     private void showMyLocate(MyLocationData location) {
@@ -133,7 +146,7 @@ public class BaiduMapActivity extends AppCompatActivity {
         //bd09：百度墨卡托坐标；
         //海外地区定位，无需设置坐标类型，统一返回wgs84类型坐标
 
-        option.setScanSpan(1000);
+//        option.setScanSpan(1000);
         //可选，设置发起定位请求的间隔，int类型，单位ms
         //如果设置为0，则代表单次定位，即仅定位一次，默认为0
         //如果设置非0，需设置1000ms以上才有效
