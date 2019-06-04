@@ -33,4 +33,6 @@ dependencies {
 
     //权限申请
     implementation 'com.github.tbruyelle:rxpermissions:0.10.2'
+    // 网络请求
+    implementation 'com.zhouyou:rxeasyhttp:2.1.0'
 }

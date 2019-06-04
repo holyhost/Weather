@@ -2,6 +2,9 @@ package com.zxyoyo.apk.weather;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.Toast;
+
 import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
 import com.baidu.location.LocationClient;
@@ -49,6 +52,28 @@ public class BaiduMapActivity extends AppCompatActivity {
         mBaiduMap.setMyLocationConfiguration(config);
 //        getLocation();
         getlatAndLng();
+        mBaiduMap.setOnMapStatusChangeListener(new BaiduMap.OnMapStatusChangeListener() {
+            @Override
+            public void onMapStatusChangeStart(MapStatus mapStatus) {
+
+            }
+
+            @Override
+            public void onMapStatusChangeStart(MapStatus mapStatus, int i) {
+
+            }
+
+            @Override
+            public void onMapStatusChange(MapStatus mapStatus) {
+
+            }
+
+            @Override
+            public void onMapStatusChangeFinish(MapStatus mapStatus) {
+                Log.e("map-finish",mapStatus+"");
+
+            }
+        });
 
     }
 
@@ -169,6 +194,8 @@ public class BaiduMapActivity extends AppCompatActivity {
 
 
 
+    //设置一个默认城市
+    private String currentCity = "上海";
 
     class MyLocationListener extends BDAbstractLocationListener {
 
@@ -187,6 +214,7 @@ public class BaiduMapActivity extends AppCompatActivity {
             String country = bdLocation.getCountry();    //获取国家
             String province = bdLocation.getProvince();    //获取省份
             String city = bdLocation.getCity();    //获取城市
+            currentCity = city;
             String district = bdLocation.getDistrict();    //获取区县
             String street = bdLocation.getStreet();    //获取街道信息
             showMyLocate(locData);
