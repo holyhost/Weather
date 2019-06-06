@@ -23,4 +23,11 @@ public class ExampleInstrumentedTest {
 
         assertEquals("com.zxyoyo.apk.weather", appContext.getPackageName());
     }
+
+    @Test
+    public  void main() {
+        long time = System.currentTimeMillis();
+        System.out.println("start-time:"+time);
+    }
+
 }

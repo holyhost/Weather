@@ -43,7 +43,7 @@ public class BaiduMapActivity extends AppCompatActivity {
         //移除baidu的logo
         mMapView.removeViewAt(1);
         //设置地图缩放比例
-        mBaiduMap.setMapStatus(MapStatusUpdateFactory.newMapStatus(new MapStatus.Builder().zoom(20.0f).build()));
+        mBaiduMap.setMapStatus(MapStatusUpdateFactory.newMapStatus(new MapStatus.Builder().zoom(12.0f).build()));
         //声明LocationClient类
         mLocationClient = new LocationClient(getApplicationContext());
         // 注册定位监听
