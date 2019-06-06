@@ -89,7 +89,7 @@ public class WebActivity extends AppCompatActivity {
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
-                hideBottom();
+                hideViews(view);
             }
 
             @Override
@@ -125,14 +125,31 @@ public class WebActivity extends AppCompatActivity {
         disposable = Observable.interval(5, TimeUnit.SECONDS)
                 .subscribe(next -> {
                     Log.i("web-log", "interval-start");
-                    hideBottom();
+                    hideViews(webView);
                 });
 
 
     }
 
-    // 隐藏sudu方法
-    private void hideBottom() {
+    private String[] cssNames = new String[]{
+            "ggModel sixd-box-ad",//顶部广告
+            "sixd-navbar",// 顶部广告
+            "xuan",// 悬浮窗，放到桌面
+            "container",// 图片广告
+            "pic_item",// 图片广告
+            "pic_row",// 图片广告
+            "pic",// 图片广告
+            "sixd-box-ad",// 图片广告
+    };
+
+    private void hideViews(WebView webView){
+        for(int i=0;i<cssNames.length;i++){
+            WebUtils.hideHtmlView(webView,cssNames[i]);
+            Log.i("web-log", "interval-start:"+i);
+
+        }
+    }
+    private void hideViews() {
         try {
             //定义javaScript方法
 //            String javascript = "javascript:function hideBottom() { "
@@ -141,12 +158,17 @@ public class WebActivity extends AppCompatActivity {
 
             String javascript = "javascript:function hideBottom() { "
                     + "console.log('hide bottom');"
-                    + "console.log(document.getElementsByClassName('sudu').length);" // 打印数组的长度
-                    + "document.getElementsByClassName('ggModel sixd-box-ad')[0].style.display='none';"
-                    + "document.getElementsByClassName('sixd-navbar')[0].style.display='none';"
-                    + "document.getElementsByClassName('xuan')[0].style.display='none';"
-                    + "document.getElementsByClassName('pic_container')[0].style.display='none';"
+                    + "document.getElementsByClassName('ggModel sixd-box-ad')[0].style.display='none';"//顶部广告
+                    + "document.getElementsByClassName('sixd-navbar')[0].style.display='none';"//顶部广告
+                    + "document.getElementsByClassName('xuan')[0].style.display='none';"// 悬浮窗，放到桌面
+                    + "console.log('hide pic_container');"
+                    + "document.getElementsByClassName('pic_container')[0].style.display='none';"// 图片广告
+                    + "console.log('hide pic_row');"
                     + "document.getElementsByClassName('pic_row')[0].style.display='none';"
+                    + "console.log('hide pic_item');"
+                    + "document.getElementsByClassName('pic_item')[0].style.display='none';"
+                    + "document.getElementsByClassName('pic')[0].style.display='none';"
+                    + "document.getElementsByClassName('pic_title')[0].style.display='none';"
                     + "}";
             //加载方法
             webView.loadUrl(javascript);
