@@ -1,0 +1,53 @@
+<html>
+<header>
+
+    <meta charset="UTF-8">
+    <title>test</title>
+
+    <script>
+    function callHello(){
+        AndroidNative.hello();
+    }
+
+    function callHello1(){
+        AndroidNative.hello('hello Android');
+    }
+
+    function callAndroid(){
+    //Js编写
+        var temp = AndroidNative.getAndroid();
+        console.log(temp);
+        alert(temp);
+    }
+
+    function jsFun20(){
+        console.log('hide jsFun20');
+        var nodes = document.getElementsByClassName('pic');
+        var count = nodes.length;
+        for(int i=0;i<count;i++){
+         nodes[i].style.display='none';
+         }
+     }
+
+     function jsFun314(){
+        console.log('hide jsFun314');
+        var nodes = document.getElementsByClassName('pic');
+        var count = nodes.length;
+        console.log(count);
+        for(int i=0;i<count;i++){
+            nodes[i].style.display='none';
+            }
+     }
+
+
+
+
+</script>
+</header>
+<body>
+<button onclick="callHello()">Toast</button>
+<button onclick="callAndroid()">获取值</button>
+
+</body>
+
+</html>

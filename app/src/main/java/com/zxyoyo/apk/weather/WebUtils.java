@@ -39,7 +39,23 @@ public class WebUtils {
         }
     }
 
-    public static void hideIframe(){
-
+    public static void removeHtmlNode(WebView webView,String nodeName){
+        String funNanme = "jsFun"+nodeName+(funIndex++);
+        String stringCount = "$('"+nodeName+"').remove();";
+        String javascript = "javascript:function "
+                + funNanme
+                +"() { "
+                + "console.log('hide "
+                + funNanme
+                +"');"
+                +stringCount
+                + "}";
+        //加载方法
+        Log.i("javascript",javascript);
+        webView.loadUrl(javascript);
+        //执行方法
+        webView.loadUrl("javascript:" +
+                funNanme +
+                "();");
     }
 }

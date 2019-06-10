@@ -22,10 +22,18 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
+import com.zhouyou.http.EasyHttp;
+
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 import static android.view.KeyEvent.KEYCODE_BACK;
 
@@ -38,6 +46,7 @@ public class WebActivity extends AppCompatActivity {
     private WebView webView;
 
     private String curUrl = "file:///android_asset/test.html";//当前的url
+    private String localUrl = "file:///android_asset/weather.html";//当前的url
     private Disposable disposable;
 
     @Override
@@ -72,12 +81,32 @@ public class WebActivity extends AppCompatActivity {
             ClipboardManager manager = (ClipboardManager) this.getSystemService(Context.CLIPBOARD_SERVICE);
             manager.setPrimaryClip(ClipData.newPlainText("",curUrl));
             Toast.makeText(this, curUrl, Toast.LENGTH_SHORT).show();
-
+            loadLocalHtml();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
+
+    /**
+     * 加载本地html模版
+     */
+    private void loadLocalHtml() {
+        EasyHttp.get(curUrl)
+                .baseUrl("http://www.baidu.com")
+                .execute(String.class)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(data ->{
+//                    Log.i("weather",data);
+                    StringBuffer buffer = new StringBuffer(data);
+                    OutputStream outputStream = new FileOutputStream(data);
+
+                });
+//        webView.loadUrl(localUrl);
+
+    }
+
     private void initWebView(){
         webView.getSettings().setJavaScriptEnabled(true);
         webView.setWebViewClient(new WebViewClient(){
@@ -89,7 +118,10 @@ public class WebActivity extends AppCompatActivity {
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
+                // 移除iframe节点
+                WebUtils.removeHtmlNode(webView,"iframe");
                 hideViews(view);
+
             }
 
             @Override
@@ -103,7 +135,15 @@ public class WebActivity extends AppCompatActivity {
             @Override
             public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
 
-//                if (url.contains("baidu.com")) return new WebResourceResponse("text/html","utf-8",null);
+                if (url.contains("baidu.com")) {
+                    InputStream stream = null;
+                    try {
+                        stream = getAssets().open("test.html");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    return new WebResourceResponse("text/html","utf-8",stream);
+                }
 
                 Log.e("shouldInterceptRequest",url);
 
@@ -140,6 +180,7 @@ public class WebActivity extends AppCompatActivity {
             "pic_row",// 图片广告
             "pic",// 图片广告
             "sixd-box-ad",// 图片广告
+            "cxnza",// 底部悬浮广告
     };
 
     private void hideViews(WebView webView){
