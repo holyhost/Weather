@@ -1,11 +1,15 @@
 package com.zxyoyo.apk.weather;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Point;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.baidu.location.BDAbstractLocationListener;
@@ -37,6 +41,7 @@ public class BaiduMapActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_baidu_map);
+        setTransparent();
         //获取地图控件引用
         mMapView = (MapView) findViewById(R.id.bd_map);
         mBaiduMap = mMapView.getMap();
@@ -83,6 +88,20 @@ public class BaiduMapActivity extends AppCompatActivity {
 
     }
 
+    private void setTransparent(){
+        if (Build.VERSION.SDK_INT >= 21) {//21表示5.0
+            Window window = getWindow();
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(Color.TRANSPARENT);
+        } else if (Build.VERSION.SDK_INT >= 19) {//19表示4.4
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            //虚拟键盘也透明
+            //getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+        }
+    }
     public void ivClick(View view){
         String url = "http://m.weather.com.cn/d/town/index?lat="+point.latitude+"&lon="+point.longitude;
         Intent intent = new Intent(this,WebActivity.class);
